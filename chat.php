@@ -27,58 +27,7 @@ if (isset($_GET['logout'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat Interface</title>
-    <link rel="stylesheet" href="styles.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
-            margin: 0;
-            padding: 0;
-        }
-        .chat-container {
-            width: 400px;
-            margin: 50px auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .chat-box {
-            max-height: 300px;
-            overflow-y: auto;
-            padding: 10px;
-            border: 1px solid #ccc;
-            margin-bottom: 10px;
-        }
-        .chat-box p {
-            margin: 5px 0;
-        }
-        .chat-input {
-            display: flex;
-        }
-        .chat-input input[type="text"] {
-            flex: 1;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        .chat-input button {
-            padding: 10px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-        .logout {
-            text-align: center;
-            margin-top: 10px;
-        }
-        .logout a {
-            color: #007bff;
-            text-decoration: none;
-        }
-    </style>
+    <link rel="stylesheet" href="assets/css/chat.css">
 </head>
 <body>
     <div class="chat-container">
@@ -106,45 +55,6 @@ if (isset($_GET['logout'])) {
         </div>
     </div>
 
-    <script>
-        const chatForm = document.getElementById('chat-form');
-        const chatBox = document.getElementById('chat-box');
-
-        // Función para cargar mensajes cada 2 segundos
-        function loadMessages() {
-            fetch('Acciones/get_messages.php')
-                .then(response => response.text())
-                .then(data => {
-                    chatBox.innerHTML = data;
-                    chatBox.scrollTop = chatBox.scrollHeight; // Scroll al final
-                });
-        }
-
-        // Cargar mensajes al cargar la página
-        loadMessages();
-        setInterval(loadMessages, 2000);
-
-        // Enviar mensaje
-        chatForm.addEventListener('submit', function (e) {
-            e.preventDefault();
-            const username = document.getElementById('username').value;
-            const message = document.getElementById('message').value;
-
-            fetch('Acciones/send_message.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: `username=${encodeURIComponent(username)}&message=${encodeURIComponent(message)}`
-            })
-            .then(response => response.text())
-            .then(data => {
-                if (data === 'success') {
-                    document.getElementById('message').value = '';
-                    loadMessages();
-                }
-            });
-        });
-    </script>
+    <script src="assets/js/chat.js"></script>
 </body>
 </html>
