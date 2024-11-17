@@ -17,7 +17,7 @@ if (isset($_GET['logout'])) {
     $update_sql = "UPDATE users SET logged_in = 0 WHERE username = '$username'";
     $conn->query($update_sql);
     session_destroy();
-    header("Location: login.php");
+    header("Location: index.php");
     exit();
 }
 ?>
@@ -112,7 +112,7 @@ if (isset($_GET['logout'])) {
 
         // Función para cargar mensajes cada 2 segundos
         function loadMessages() {
-            fetch('get_messages.php')
+            fetch('Acciones/get_messages.php')
                 .then(response => response.text())
                 .then(data => {
                     chatBox.innerHTML = data;
@@ -130,7 +130,7 @@ if (isset($_GET['logout'])) {
             const username = document.getElementById('username').value;
             const message = document.getElementById('message').value;
 
-            fetch('send_message.php', {
+            fetch('Acciones/send_message.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
