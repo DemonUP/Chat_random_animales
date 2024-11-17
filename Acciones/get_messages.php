@@ -1,6 +1,6 @@
 <?php
 // Incluir el archivo de configuración para la conexión a la base de datos
-include 'config.php';
+include '../config.php';
 
 // Obtener los mensajes del chat
 $sql = "SELECT * FROM chat_messages ORDER BY timestamp ASC";
