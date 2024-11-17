@@ -7,7 +7,7 @@ include 'config.php';
 
 // Verificar si el usuario está logueado
 if (!isset($_SESSION['username'])) {
-    header("Location: login.php");
+    header("Location: index.php");
     exit();
 }
 
@@ -17,7 +17,7 @@ if (isset($_GET['logout'])) {
     $update_sql = "UPDATE users SET logged_in = 0 WHERE username = '$username'";
     $conn->query($update_sql);
     session_destroy();
-    header("Location: login.php");
+    header("Location: index.php");
     exit();
 }
 
@@ -76,7 +76,7 @@ if (isset($_POST['action']) && isset($_SESSION['is_admin']) && $_SESSION['is_adm
             <button type="submit">Enviar</button>
         </form>
         <div class="logout">
-            <a href="index.php">Cerrar sesión</a>
+            <a href="?logout=true">Cerrar sesión</a>
         </div>
         <?php if (isset($_SESSION['is_admin']) && $_SESSION['is_admin']) { ?>
             <div class="admin-panel">
@@ -90,7 +90,7 @@ if (isset($_POST['action']) && isset($_SESSION['is_admin']) && $_SESSION['is_adm
                         echo "<form method='post' style='display:inline;'>
                                 <input type='hidden' name='user_id' value='" . $user_row['id'] . "'>
                                 <button type='submit' name='action' value='logout'>Desloguear</button>
-                                <button type='submit' name='action' value='delete'>Eliminar</button>
+                                <button  type='submit' name='action' value='delete'>Eliminar</button>
                               </form>";
                     }
                 } else {

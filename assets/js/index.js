@@ -10,3 +10,12 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+
+document.getElementById('username').addEventListener('input', function() {
+    const adminPasswordField = document.getElementById('admin-password-field');
+    if (this.value.toLowerCase() === 'admin') {
+        adminPasswordField.style.display = 'block';
+    } else {
+        adminPasswordField.style.display = 'none';
+    }
+});
