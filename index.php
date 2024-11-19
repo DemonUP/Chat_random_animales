@@ -62,20 +62,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['get_animal'])) {
     <title>Login Chat Random</title>
     <link rel="stylesheet" href="assets/css/index.css">
     <script>
-        function redirectToChat() {
-            let countdown = 7; // Inicializa la cuenta regresiva en 7 segundos
-            const countdownElement = document.getElementById('countdown'); // Selecciona el elemento de texto para actualizarlo
+function redirectToChat() {
+    let countdown = 7; // Tiempo inicial del contador
+    const countdownElement = document.getElementById('countdown');
+    const blackScreen = document.createElement('div');
+    blackScreen.classList.add('black-screen');
+    document.body.appendChild(blackScreen);
 
-            // Actualiza el texto cada segundo
-            const interval = setInterval(function() {
-                countdown -= 1;
-                countdownElement.textContent = countdown; // Actualiza el texto en el elemento
-                if (countdown <= 0) {
-                    clearInterval(interval); // Detiene el intervalo
-                    window.location.href = 'chat.php'; // Redirige al usuario
-                }
-            }, 1000);
+    // Actualización del contador
+    const interval = setInterval(() => {
+        countdown -= 1;
+        countdownElement.textContent = countdown;
+
+        if (countdown <= 0) {
+            clearInterval(interval);
+
+            // Mostrar la capa negra
+            blackScreen.classList.add('show');
+
+            // Esperar 1 segundo con la pantalla negra antes de redirigir
+            setTimeout(() => {
+                window.location.href = 'chat.php';
+            }, 2000); // Tiempo en milisegundos
         }
+    }, 1000);
+}
+
     </script>
 </head>
 <body>
@@ -91,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['get_animal'])) {
                 <script>redirectToChat();</script>
             </div>
         <?php else: ?>
-            <form method="post" action="">
+            <form class="form_boton" method="post" action="">
                 <button type="submit" name="get_animal">Tirar el Dado</button>
             </form>
         <?php endif; ?>
