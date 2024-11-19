@@ -5,51 +5,52 @@ session_start();
 // Incluir el archivo de configuración para la conexión a la base de datos
 include 'config.php';
 
-// Comprobar si el usuario ya está logueado
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['username'])) {
-    $username = htmlspecialchars($_POST['username']);
-    $password = isset($_POST['password']) ? htmlspecialchars($_POST['password']) : '';
+// Lista de animales disponibles y sus imágenes
+$animal_images = [
+    'León' => 'assets/images/leon.jpg',
+    'Tigre' => 'assets/images/tigre.jpg',
+    'Elefante' => 'assets/images/elefante.jpg',
+    'Jirafa' => 'assets/images/jirafa.jpg',
+    'Panda' => 'assets/images/panda.jpg',
+    'Cebra' => 'assets/images/cebra.jpg',
+    'Mono' => 'assets/images/mono.jpg',
+    'Lobo' => 'assets/images/lobo.jpg',
+    'Oso' => 'assets/images/oso.jpg',
+    'Rinoceronte' => 'assets/images/rinoceronte.jpg',
+];
 
-    if ($username === "Admin") {
-        if ($password === "1234") {
-            $_SESSION['username'] = $username;
-            $_SESSION['is_admin'] = true;
-            header("Location: chat.php");
-            exit();
-        } else {
-            $error = "Contraseña incorrecta para Admin.";
-        }
+// Si el usuario ya tiene asignado un animal, redirigir al chat directamente
+if (isset($_SESSION['username']) && $_SESSION['username']) {
+    header("Location: chat.php");
+    exit();
+}
+
+// Verificar si se solicitó un animal
+$selected_animal = null;
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['get_animal'])) {
+    // Obtener animales disponibles (no usados)
+    $sql = "SELECT username FROM users WHERE is_taken = 0";
+    $result = $conn->query($sql);
+    $available_animals = [];
+    while ($row = $result->fetch_assoc()) {
+        $available_animals[] = $row['username'];
+    }
+
+    if (count($available_animals) > 0) {
+        // Seleccionar un animal al azar
+        $random_animal = $available_animals[array_rand($available_animals)];
+
+        // Marcar el animal como tomado en la base de datos
+        $update_sql = "UPDATE users SET is_taken = 1 WHERE username = '$random_animal'";
+        $conn->query($update_sql);
+
+        // Asignar el animal al usuario y almacenar en sesión
+        $_SESSION['username'] = $random_animal;
+        $selected_animal = $random_animal;
+
+        // No hacer ninguna redirección hasta que pasen los 7 segundos
     } else {
-        // Verificar si el usuario ya existe en la tabla y si está logueado
-        $sql = "SELECT * FROM users WHERE username = '$username'";
-        $result = $conn->query($sql);
-
-        if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            if ($row['logged_in']) {
-                $error = "El usuario ya está logueado. Debes desloguearte antes de poder loguearte nuevamente.";
-            } else {
-                // Si el usuario existe pero no está logueado, actualizar el estado de logueo
-                $update_sql = "UPDATE users SET logged_in = 1 WHERE username = '$username'";
-                if ($conn->query($update_sql) === TRUE) {
-                    $_SESSION['username'] = $username;
-                    header("Location: chat.php");
-                    exit();
-                } else {
-                    $error = "Error al actualizar el estado de logueo.";
-                }
-            }
-        } else {
-            // Registrar al usuario si no existe en la tabla
-            $insert_sql = "INSERT INTO users (username, logged_in) VALUES ('$username', 1)";
-            if ($conn->query($insert_sql) === TRUE) {
-                $_SESSION['username'] = $username;
-                header("Location: chat.php");
-                exit();
-            } else {
-                $error = "Error al registrar al usuario.";
-            }
-        }
+        $error = "Lo sentimos, no hay animales disponibles en este momento.";
     }
 }
 ?>
@@ -58,21 +59,42 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['username'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Chat</title>
+    <title>Login Chat Random</title>
     <link rel="stylesheet" href="assets/css/index.css">
+    <script>
+        function redirectToChat() {
+            let countdown = 7; // Inicializa la cuenta regresiva en 7 segundos
+            const countdownElement = document.getElementById('countdown'); // Selecciona el elemento de texto para actualizarlo
+
+            // Actualiza el texto cada segundo
+            const interval = setInterval(function() {
+                countdown -= 1;
+                countdownElement.textContent = countdown; // Actualiza el texto en el elemento
+                if (countdown <= 0) {
+                    clearInterval(interval); // Detiene el intervalo
+                    window.location.href = 'chat.php'; // Redirige al usuario
+                }
+            }, 1000);
+        }
+    </script>
 </head>
 <body>
     <div class="login-container">
-        <h2>Login al Chat</h2>
+        <h2>Chat Random - Elige tu Animal</h2>
         <?php if (isset($error)) { echo "<p class='error'>$error</p>"; } ?>
-        <form method="post" action="">
-            <input type="text" id="username" name="username" placeholder="Ingrese su nombre" required>
-            <div id="admin-password-field" style="display: none;">
-                <input type="text" type="password" name="password" placeholder="Contraseña" id="password">
+
+        <?php if ($selected_animal): ?>
+            <div class="animal-display">
+                <h3>¡Te tocó: <?php echo htmlspecialchars($selected_animal); ?>!</h3>
+                <img src="<?php echo $animal_images[$selected_animal]; ?>" alt="<?php echo htmlspecialchars($selected_animal); ?>">
+                <p>Entrando al chat en <span id="countdown">7</span> segundos...</p>
+                <script>redirectToChat();</script>
             </div>
-            <button type="submit">Entrar al chat</button>
-        </form>
+        <?php else: ?>
+            <form method="post" action="">
+                <button type="submit" name="get_animal">Tirar el Dado</button>
+            </form>
+        <?php endif; ?>
     </div>
-    <script src="assets/js/index.js"></script>
 </body>
 </html>
