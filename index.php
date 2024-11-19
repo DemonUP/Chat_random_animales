@@ -80,10 +80,10 @@ function redirectToChat() {
             // Mostrar la capa negra
             blackScreen.classList.add('show');
 
-            // Esperar 1 segundo con la pantalla negra antes de redirigir
+            // Esperar 2.5 segundo con la pantalla negra antes de redirigir
             setTimeout(() => {
                 window.location.href = 'chat.php';
-            }, 2000); // Tiempo en milisegundos
+            }, 2500); // Tiempo en milisegundos
         }
     }, 1000);
 }

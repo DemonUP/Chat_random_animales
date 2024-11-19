@@ -15,13 +15,26 @@ $username = $_SESSION['username'];
 
 // Deslogueo de usuario
 if (isset($_GET['logout'])) {
-    // Marcar el animal como disponible nuevamente
-    $update_sql = "UPDATE users SET is_taken = 0 WHERE username = '$username'";
-    $conn->query($update_sql);
+    // Eliminar los mensajes del usuario desconectado
+    $delete_sql = "DELETE FROM chat_messages WHERE user = ?";
+    $stmt = $conn->prepare($delete_sql);
+    $stmt->bind_param("s", $username); // $username viene de $_SESSION['username']
+    $stmt->execute();
+    $stmt->close();
+
+    // Marcar el usuario como disponible nuevamente
+    $update_sql = "UPDATE users SET is_taken = 0 WHERE username = ?";
+    $stmt = $conn->prepare($update_sql);
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $stmt->close();
+
+    // Cerrar la sesión
     session_destroy();
     header("Location: index.php");
     exit();
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -29,7 +42,7 @@ if (isset($_GET['logout'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat Interface</title>
-    <link rel="stylesheet" href="assets/css/chat.css?v=2">
+    <link rel="stylesheet" href="assets/css/chat.css?v=2.1">
 </head>
 <body>
     <div class="chat-container">

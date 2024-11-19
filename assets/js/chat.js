@@ -28,4 +28,4 @@ function loadMessages() {
         });
 }
 
-setInterval(loadMessages, 2000);
+setInterval(loadMessages, 1000);
