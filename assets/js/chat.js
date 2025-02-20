@@ -28,4 +28,17 @@ function loadMessages() {
         });
 }
 
+function checkUserStatus() {
+    fetch('acciones/check_status.php')
+    .then(response => response.text())
+    .then(status => {
+        if (status === "logout") {
+            alert("Has sido desconectado por un administrador.");
+            window.location.href = "index.php";
+        }
+    });
+}
+
+// Revisar el estado del usuario cada 5 segundos
+setInterval(checkUserStatus, 3500);
 setInterval(loadMessages, 1000);

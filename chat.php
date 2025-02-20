@@ -11,7 +11,18 @@ if (!isset($_SESSION['username'])) {
     exit();
 }
 
+
 $username = $_SESSION['username'];
+
+$check_status = $conn->query("SELECT is_taken FROM users WHERE username = '$username'");
+if ($check_status->num_rows > 0) {
+    $row = $check_status->fetch_assoc();
+    if ($row['is_taken'] == 0) {
+        session_destroy();
+        header("Location: index.php?error=logout");
+        exit();
+    }
+}
 
 // Deslogueo de usuario
 if (isset($_GET['logout'])) {
@@ -69,6 +80,6 @@ if (isset($_GET['logout'])) {
             <a href="?logout=true">Cerrar sesión</a>
         </div>
     </div>
-    <script src="assets/js/chat.js"></script>
+    <script src="assets/js/chat.js?=1.0"></script>
 </body>
 </html>

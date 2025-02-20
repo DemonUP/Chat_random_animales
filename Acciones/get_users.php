@@ -1,17 +1,18 @@
 <?php
-// Incluir el archivo de configuración para la conexión a la base de datos
 include '../config.php';
 
-// Obtener la lista de usuarios
-$user_sql = "SELECT * FROM users";
-$user_result = $conn->query($user_sql);
-if ($user_result->num_rows > 0) {
-    while ($user_row = $user_result->fetch_assoc()) {
-        echo "<p>Usuario: " . htmlspecialchars($user_row['username']) . " - Estado: " . ($user_row['logged_in'] ? "Logueado" : "Deslogueado") . "</p>";
-        echo "<button class='admin-action' data-user-id='" . $user_row['id'] . "' data-action='logout'>Desloguear</button>";
-        echo "<button class='admin-action' data-user-id='" . $user_row['id'] . "' data-action='delete'>Eliminar</button>";
+$users_sql = "SELECT * FROM users WHERE is_taken = 1";
+$users_result = $conn->query($users_sql);
+
+if ($users_result->num_rows > 0) {
+    while ($user = $users_result->fetch_assoc()) {
+        echo "<div class='user-card'>
+                <p><strong>" . htmlspecialchars($user['username']) . "</strong></p>
+                <button class='btn-logout' onclick='logoutUser(\"{$user['username']}\")'>Expulsar</button>
+              </div>";
     }
 } else {
-    echo "<p>No hay usuarios registrados.</p>";
+    echo "<p class='no-users'>No hay usuarios conectado...</p>";
 }
 ?>
+

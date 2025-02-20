@@ -1,0 +1,115 @@
+/* 🎃 Fondo oscuro gótico */
+body {
+    font-family: 'Creepster', Arial, sans-serif; /* Fuente gótica */
+    background: radial-gradient(circle, #200000, #000000);
+    color: #ff0000;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+/* 📦 Contenedor principal */
+.admin-container {
+    width: 90%;
+    max-width: 600px;
+    margin: 50px auto;
+    background: rgba(0, 0, 0, 0.9);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0px 0px 20px rgba(255, 0, 0, 0.6);
+    border: 2px solid #ff0000;
+}
+
+/* 🕸️ Título */
+h1 {
+    font-size: 2rem;
+    color: #ff0000;
+    text-shadow: 2px 2px 5px #000;
+}
+
+/* 🦇 Sección de usuarios */
+h2 {
+    font-size: 1.5rem;
+    color: #cc0000;
+    margin-bottom: 10px;
+}
+
+/* 🩸 Usuarios conectados */
+.user-card {
+    background: rgba(255, 0, 0, 0.2);
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(255, 0, 0, 0.5);
+    border: 1px solid #ff0000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: left;
+    padding-left: 15px;
+}
+
+.user-card p {
+    font-size: 1.2rem;
+    color: #ff0000;
+}
+
+/* ❌ Botón de Expulsar */
+.btn-logout {
+    background-color: #990000;
+    border: 1px solid #ff0000;
+    padding: 10px;
+    font-size: 16px;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+    text-shadow: 2px 2px 5px #000;
+}
+
+.btn-logout:hover {
+    background-color: #ff0000;
+    transform: scale(1.1);
+    box-shadow: 0px 0px 10px rgba(255, 0, 0, 0.8);
+}
+
+/* ⏪ Botón de Salir */
+.btn-exit {
+    background-color: #550000;
+    border: 1px solid #ff0000;
+    padding: 12px 20px;
+    font-size: 16px;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: 0.3s;
+    text-shadow: 2px 2px 5px #000;
+}
+
+.btn-exit:hover {
+    background-color: #770000;
+    transform: scale(1.1);
+    box-shadow: 0px 0px 10px rgba(255, 0, 0, 0.8);
+}
+
+/* 🚫 Mensaje cuando no hay usuarios */
+.no-users {
+    font-size: 1.2rem;
+    color: #ff4444;
+    font-style: italic;
+    margin-top: 20px;
+}
+
+/* 📱 Diseño Responsive */
+@media (max-width: 768px) {
+    .admin-container {
+        width: 95%;
+        padding: 15px;
+    }
+    
+    .btn-logout, .btn-exit {
+        font-size: 14px;
+        padding: 8px 15px;
+    }
+}

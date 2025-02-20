@@ -1,8 +1,6 @@
 <?php
 // Iniciar sesión
 session_start();
-
-// Incluir el archivo de configuración para la conexión a la base de datos
 include 'config.php';
 
 // Lista de animales disponibles y sus imágenes
@@ -19,7 +17,7 @@ $animal_images = [
     'Rinoceronte' => 'assets/images/rinoceronte.jpg',
 ];
 
-// Si el usuario ya tiene asignado un animal, redirigir al chat directamente
+// Si el usuario ya tiene asignado un animal, redirigir al chat
 if (isset($_SESSION['username']) && $_SESSION['username']) {
     header("Location: chat.php");
     exit();
@@ -28,7 +26,7 @@ if (isset($_SESSION['username']) && $_SESSION['username']) {
 // Verificar si se solicitó un animal
 $selected_animal = null;
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['get_animal'])) {
-    // Obtener animales disponibles (no usados)
+    // Obtener animales disponibles
     $sql = "SELECT username FROM users WHERE is_taken = 0";
     $result = $conn->query($sql);
     $available_animals = [];
@@ -41,54 +39,73 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['get_animal'])) {
         $random_animal = $available_animals[array_rand($available_animals)];
 
         // Marcar el animal como tomado en la base de datos
-        $update_sql = "UPDATE users SET is_taken = 1 WHERE username = '$random_animal'";
-        $conn->query($update_sql);
+        $conn->query("UPDATE users SET is_taken = 1 WHERE username = '$random_animal'");
 
         // Asignar el animal al usuario y almacenar en sesión
         $_SESSION['username'] = $random_animal;
         $selected_animal = $random_animal;
-
-        // No hacer ninguna redirección hasta que pasen los 7 segundos
     } else {
         $error = "Lo sentimos, no hay animales disponibles en este momento.";
     }
 }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Chat Random</title>
-    <link rel="stylesheet" href="assets/css/index.css">
+    <link rel="stylesheet" href="assets/css/index.css?=1.1">
     <script>
 function redirectToChat() {
-    let countdown = 7; // Tiempo inicial del contador
+    let countdown = 7;
     const countdownElement = document.getElementById('countdown');
     const blackScreen = document.createElement('div');
     blackScreen.classList.add('black-screen');
     document.body.appendChild(blackScreen);
 
-    // Actualización del contador
     const interval = setInterval(() => {
         countdown -= 1;
         countdownElement.textContent = countdown;
 
         if (countdown <= 0) {
             clearInterval(interval);
-
-            // Mostrar la capa negra
             blackScreen.classList.add('show');
-
-            // Esperar 2.5 segundo con la pantalla negra antes de redirigir
-            setTimeout(() => {
-                window.location.href = 'chat.php';
-            }, 2500); // Tiempo en milisegundos
+            setTimeout(() => { window.location.href = 'chat.php'; }, 2500);
         }
     }, 1000);
 }
 
-    </script>
+// 🔐 Función para autenticar admin con la base de datos
+function loginAdmin() {
+    let username = document.getElementById('admin-username').value.trim();
+    let pass = document.getElementById('admin-pass').value.trim();
+
+    fetch('Admin/admin_login.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: 'username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(pass)
+    })
+    .then(response => response.text())
+    .then(data => {
+        console.log("Respuesta del servidor:", data); // 👀 DEBUG
+        if (data.trim() === 'success') {
+            window.location.href = 'admin.php';
+        } else {
+            alert('Usuario o contraseña incorrectos.');
+        }
+    });
+}
+
+
+// Mostrar/Ocultar login de admin
+document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById('admin-btn').addEventListener('click', () => {
+        let adminLogin = document.getElementById('admin-login');
+        adminLogin.style.display = (adminLogin.style.display === 'block') ? 'none' : 'block';
+    });
+});
+</script>
 </head>
 <body>
     <div class="login-container">
@@ -108,5 +125,18 @@ function redirectToChat() {
             </form>
         <?php endif; ?>
     </div>
+
+    <!-- 🔧 Botón de Admin (Tuerquita) fijo en la esquina -->
+    <button id="admin-btn" class="admin-button">⚙️</button>
+
+    <!-- 🛠 Menú flotante de autenticación Admin -->
+    <div id="admin-login" class="admin-login">
+        <input type="text" id="admin-username" placeholder="Usuario" required>
+        <input type="password" id="admin-pass" placeholder="Contraseña" required>
+        <button onclick="loginAdmin()">Entrar</button>
+    </div>
+
+    <script src="assets/js/chat.js?=1.5"></script>
 </body>
 </html>
+

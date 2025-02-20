@@ -182,3 +182,59 @@ img:hover {
         padding: 10px 20px;
     }
 }
+/* 🔧 Botón de Admin (Tuerquita) */
+#admin-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 30px;
+    cursor: pointer;
+    color: #fff;
+    transition: transform 0.3s ease;
+}
+
+#admin-btn:hover {
+    transform: rotate(90deg) scale(1.2);
+}
+
+/* 🛠 Menú de Autenticación Admin */
+#admin-login {
+    display: none;
+    position: fixed;
+    top: 60px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.9);
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    width: 200px;
+}
+
+#admin-login input {
+    width: 90%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    text-align: center;
+}
+
+#admin-login button {
+    width: 100%;
+    background: #dd76c3;
+    border: none;
+    padding: 8px;
+    font-size: 16px;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#admin-login button:hover {
+    transform: scale(1.1);
+}
