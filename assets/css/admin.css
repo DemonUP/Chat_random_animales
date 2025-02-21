@@ -1,65 +1,104 @@
 /* 🎃 Fondo oscuro gótico */
 body {
-    font-family: 'Creepster', Arial, sans-serif; /* Fuente gótica */
+    font-family: 'Creepster', Arial, sans-serif;
     background: radial-gradient(circle, #200000, #000000);
     color: #ff0000;
     text-align: center;
     margin: 0;
     padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
-/* 📦 Contenedor principal */
-.admin-container {
+/* 📦 Panel de moderación estilo dashboard */
+.admin-dashboard {
     width: 90%;
-    max-width: 600px;
-    margin: 50px auto;
-    background: rgba(0, 0, 0, 0.9);
+    max-width: 900px;
+    display: flex;
+    flex-direction: column;
+    background: rgba(0, 0, 0, 0.95);
     padding: 20px;
     border-radius: 15px;
     box-shadow: 0px 0px 20px rgba(255, 0, 0, 0.6);
     border: 2px solid #ff0000;
 }
 
-/* 🕸️ Título */
+/* 🕸️ Encabezado */
+.admin-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
 h1 {
     font-size: 2rem;
     color: #ff0000;
     text-shadow: 2px 2px 5px #000;
+    margin: 0;
 }
 
-/* 🦇 Sección de usuarios */
-h2 {
-    font-size: 1.5rem;
-    color: #cc0000;
-    margin-bottom: 10px;
+/* 📊 Secciones del dashboard */
+.dashboard-content {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
 }
 
 /* 🩸 Usuarios conectados */
-.user-card {
-    background: rgba(255, 0, 0, 0.2);
-    padding: 10px;
-    margin: 10px 0;
+.user-section {
+    width: 40%;
+    background: rgba(50, 0, 0, 0.8);
+    padding: 15px;
     border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(255, 0, 0, 0.5);
     border: 1px solid #ff0000;
+    box-shadow: 0px 0px 10px rgba(255, 0, 0, 0.5);
+}
+
+/* 📋 Tabla de usuarios */
+.user-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.user-table th {
+    background: #550000;
+    padding: 12px;
+    text-align: left;
+    font-size: 1.2rem;
+    color: #ff4444;
+    border-bottom: 1px solid #ff0000;
+}
+
+.user-table td {
+    padding: 12px;
+    text-align: left;
+    font-size: 1rem;
+    border-bottom: 1px solid #ff0000;
+}
+
+/* 🏷️ Alinear contenido en la misma fila */
+.user-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    text-align: left;
-    padding-left: 15px;
+    gap: 10px;
 }
 
-.user-card p {
+/* 👤 Nombre de usuario */
+.user-name {
     font-size: 1.2rem;
-    color: #ff0000;
+    font-weight: bold;
+    color: #ff4444;
 }
 
 /* ❌ Botón de Expulsar */
 .btn-logout {
     background-color: #990000;
     border: 1px solid #ff0000;
-    padding: 10px;
-    font-size: 16px;
+    padding: 8px 12px;
+    font-size: 14px;
     color: white;
     border-radius: 5px;
     cursor: pointer;
@@ -71,6 +110,34 @@ h2 {
     background-color: #ff0000;
     transform: scale(1.1);
     box-shadow: 0px 0px 10px rgba(255, 0, 0, 0.8);
+}
+
+/* 🩸 Chat en vivo */
+.chat-section {
+    width: 60%;
+    background: rgba(30, 0, 0, 0.8);
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #ff0000;
+    box-shadow: 0px 0px 10px rgba(255, 0, 0, 0.5);
+}
+
+/* 💬 Chat en vivo con scroll limitado */
+#chat-box {
+    max-height: 250px;
+    overflow-y: auto;
+    background: rgba(30, 0, 0, 0.7);
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ff0000;
+    text-align: left;
+}
+
+/* 📝 Mensajes del chat */
+.chat-message {
+    padding: 8px;
+    border-bottom: 1px solid #770000;
+    color: #ffdddd;
 }
 
 /* ⏪ Botón de Salir */
@@ -93,23 +160,23 @@ h2 {
     box-shadow: 0px 0px 10px rgba(255, 0, 0, 0.8);
 }
 
-/* 🚫 Mensaje cuando no hay usuarios */
-.no-users {
-    font-size: 1.2rem;
-    color: #ff4444;
-    font-style: italic;
-    margin-top: 20px;
-}
-
 /* 📱 Diseño Responsive */
 @media (max-width: 768px) {
-    .admin-container {
-        width: 95%;
-        padding: 15px;
+    .dashboard-content {
+        flex-direction: column;
     }
-    
-    .btn-logout, .btn-exit {
-        font-size: 14px;
-        padding: 8px 15px;
+
+    .user-section, .chat-section {
+        width: 100%;
+    }
+
+    .user-table th, .user-table td {
+        font-size: 12px;
+        padding: 8px;
+    }
+
+    .btn-logout {
+        font-size: 12px;
+        padding: 6px 10px;
     }
 }

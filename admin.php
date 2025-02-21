@@ -12,69 +12,44 @@ if (!isset($_SESSION['is_admin']) || !$_SESSION['is_admin']) {
 <head>
     <meta charset="UTF-8">
     <title>Panel de Moderación</title>
-    <link rel="stylesheet" href="assets/css/admin.css">
+    <link rel="stylesheet" href="assets/css/admin.css?=1.4">
 </head>
 <body>
 
-    <div class="admin-container">
-        <h1> Panel de Moderación </h1>
+    <div class="admin-dashboard">
+        <div class="admin-header">
+            <h1>Panel de Moderación</h1>
+        </div>
 
-        <!-- Sección de Usuarios en Tiempo Real -->
-        <h2>Usuarios Conectados</h2>
-        <div id="users"></div>
+        <div class="dashboard-content">
+            <!-- 📌 Sección de Usuarios Conectados -->
+            <div class="user-section">
+                <h2>Usuarios Conectados</h2>
+                <table class="user-table">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="users">
+                        <!-- Usuarios se insertarán aquí con JavaScript -->
+                    </tbody>
+                </table>
+            </div>
 
-        <!-- Sección de Chat en Tiempo Real -->
-        <h2>Chat en Vivo</h2>
-        <div id="chat-box"></div>
+            <!-- 📌 Sección de Chat en Vivo -->
+            <div class="chat-section">
+                <h2>Chat en Vivo</h2>
+                <div id="chat-box"></div>
+            </div>
+        </div>
 
         <button class="btn-exit" onclick="window.location.href='index.php'">Abandonar</button>
     </div>
 
-    <script>
-    // 🔄 Función para actualizar la lista de usuarios conectados
-    function updateUsers() {
-        fetch('acciones/get_users.php')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('users').innerHTML = data;
-        });
-    }
-
-    // 🔄 Función para actualizar los mensajes del chat en tiempo real
-    function updateChat() {
-        fetch('acciones/get_messages.php')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('chat-box').innerHTML = data;
-        });
-    }
-
-    // 🚀 Llamar a las funciones cada 3 segundos
-    setInterval(updateUsers, 1000);
-    setInterval(updateChat, 1000);
-
-    // 🔥 Expulsar usuarios en tiempo real
-    function logoutUser(username) {
-        fetch('acciones/logout_user.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: 'username=' + encodeURIComponent(username)
-        })
-        .then(response => response.text())
-        .then(data => {
-            if (data === 'success') {
-                alert('Usuario expulsado.');
-                updateUsers();
-            } else {
-                alert('Error al expulsar al usuario.');
-            }
-        });
-    }
-
-    // 🔄 Cargar los datos al abrir la página
-    updateUsers();
-    updateChat();
-    </script>
+    <!-- Incluir el archivo de JavaScript externo -->
+    <script src="assets/js/admin.js?=1.6"></script>
 
 </body>
 </html>
