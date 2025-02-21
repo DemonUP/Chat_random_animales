@@ -49,7 +49,7 @@ if (!isset($_SESSION['is_admin']) || !$_SESSION['is_admin']) {
     </div>
 
     <!-- Incluir el archivo de JavaScript externo -->
-    <script src="assets/js/admin.js?=1.6"></script>
+    <script src="assets/js/admin.js?=2.4"></script>
 
 </body>
 </html>

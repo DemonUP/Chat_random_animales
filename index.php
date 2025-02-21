@@ -56,56 +56,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['get_animal'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Chat Random</title>
     <link rel="stylesheet" href="assets/css/index.css?=1.1">
-    <script>
-function redirectToChat() {
-    let countdown = 7;
-    const countdownElement = document.getElementById('countdown');
-    const blackScreen = document.createElement('div');
-    blackScreen.classList.add('black-screen');
-    document.body.appendChild(blackScreen);
-
-    const interval = setInterval(() => {
-        countdown -= 1;
-        countdownElement.textContent = countdown;
-
-        if (countdown <= 0) {
-            clearInterval(interval);
-            blackScreen.classList.add('show');
-            setTimeout(() => { window.location.href = 'chat.php'; }, 2500);
-        }
-    }, 1000);
-}
-
-// 🔐 Función para autenticar admin con la base de datos
-function loginAdmin() {
-    let username = document.getElementById('admin-username').value.trim();
-    let pass = document.getElementById('admin-pass').value.trim();
-
-    fetch('Admin/admin_login.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: 'username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(pass)
-    })
-    .then(response => response.text())
-    .then(data => {
-        console.log("Respuesta del servidor:", data); // 👀 DEBUG
-        if (data.trim() === 'success') {
-            window.location.href = 'admin.php';
-        } else {
-            alert('Usuario o contraseña incorrectos.');
-        }
-    });
-}
-
-
-// Mostrar/Ocultar login de admin
-document.addEventListener("DOMContentLoaded", function() {
-    document.getElementById('admin-btn').addEventListener('click', () => {
-        let adminLogin = document.getElementById('admin-login');
-        adminLogin.style.display = (adminLogin.style.display === 'block') ? 'none' : 'block';
-    });
-});
-</script>
 </head>
 <body>
     <div class="login-container">
@@ -113,12 +63,11 @@ document.addEventListener("DOMContentLoaded", function() {
         <?php if (isset($error)) { echo "<p class='error'>$error</p>"; } ?>
 
         <?php if ($selected_animal): ?>
-            <div class="animal-display">
-                <h3>¡Te tocó: <?php echo htmlspecialchars($selected_animal); ?>!</h3>
-                <img src="<?php echo $animal_images[$selected_animal]; ?>" alt="<?php echo htmlspecialchars($selected_animal); ?>">
-                <p>Entrando al chat en <span id="countdown">7</span> segundos...</p>
-                <script>redirectToChat();</script>
-            </div>
+    <div class="animal-display">
+        <h3>¡Te tocó: <?php echo htmlspecialchars($selected_animal); ?>!</h3>
+        <img src="<?php echo $animal_images[$selected_animal]; ?>" alt="<?php echo htmlspecialchars($selected_animal); ?>">
+        <p>Entrando al chat en <span id="countdown">7</span> segundos...</p>
+    </div>
         <?php else: ?>
             <form class="form_boton" method="post" action="">
                 <button type="submit" name="get_animal">Tirar el Dado</button>
@@ -136,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function() {
         <button onclick="loginAdmin()">Entrar</button>
     </div>
 
-    <script src="assets/js/chat.js?=1.5"></script>
+    <!-- Incluir archivo de JavaScript externo -->
+    <script src="assets/js/index.js?=1.6"></script>
 </body>
 </html>
-

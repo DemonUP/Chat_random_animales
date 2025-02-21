@@ -80,6 +80,6 @@ if (isset($_GET['logout'])) {
             <a href="?logout=true">Cerrar sesión</a>
         </div>
     </div>
-    <script src="assets/js/chat.js?=1.0"></script>
+    <script src="assets/js/chat.js?=1.2"></script>
 </body>
 </html>

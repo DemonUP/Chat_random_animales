@@ -28,17 +28,30 @@ function loadMessages() {
         });
 }
 
+// ⚠ Evita alertas repetidas
+let userExpelled = false;
+
 function checkUserStatus() {
+    if (userExpelled) return; // ❌ Si ya se expulsó, no seguir ejecutando
+
     fetch('acciones/check_status.php')
     .then(response => response.text())
     .then(status => {
-        if (status === "logout") {
+        if (status.trim() === "logout") {
+            userExpelled = true; // ✅ Marcar usuario como expulsado
             alert("Has sido desconectado por un administrador.");
-            window.location.href = "index.php";
+            window.location.href = "index.php"; // 🔄 Redirigir
         }
     });
 }
 
-// Revisar el estado del usuario cada 5 segundos
-setInterval(checkUserStatus, 3500);
+// 🚀 Evitar múltiples ejecuciones
+const statusInterval = setInterval(() => {
+    if (!userExpelled) {
+        checkUserStatus();
+    } else {
+        clearInterval(statusInterval); // ✅ Detener la ejecución si el usuario ya fue expulsado
+    }
+}, 3500);
+
 setInterval(loadMessages, 1000);
