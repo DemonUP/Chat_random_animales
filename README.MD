@@ -59,8 +59,23 @@ CREATE TABLE admins (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 ```
+### 🏷️ 5. Insertar usuarios (`users`)  
+```sql
+INSERT INTO animales (id, username, is_admin, is_taken)
+VALUES
+(22, 'León',        0, 0),
+(23, 'Tigre',       0, 0),
+(24, 'Elefante',    0, 0),
+(25, 'Jirafa',      0, 0),
+(26, 'Avestruz',    0, 0),
+(27, 'Toro',        0, 0),
+(28, 'Mono',        0, 0),
+(29, 'Lobo',        0, 0),
+(30, 'Oso',         0, 0),
+(31, 'Rinoceronte', 0, 0);
+```
 
-### 🏗️ 5. Insertar un Administrador Inicial  
+### 🏗️ 6. Insertar un Administrador Inicial  
 Ejecuta este comando para agregar un administrador predeterminado:
 
 ```sql
