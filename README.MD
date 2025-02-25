@@ -114,7 +114,4 @@ INSERT INTO admins (username, password) VALUES ('Dios', 'hola1234');
 
 ---
 
-🎉 ¡Gracias por probar **Chat Anónimo Random**! 🚀  
-
-Asegúrate de tener un entorno con PHP y MySQL configurado.
-Desarrolla una interfaz de chat en tiempo real (puedes usar WebSockets o AJAX para las actualizaciones).
+🎉 ¡Gracias por probar **Chat Anónimo Random**! 🚀
